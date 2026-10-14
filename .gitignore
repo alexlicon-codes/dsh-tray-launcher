@@ -1,0 +1,9 @@
+# 本机运行状态，不进仓库 / local runtime state
+settings.json
+run-harness.cmd
+harness.log
+harness.prev.log
+tray.log
+autostart.log
+open.request
+icon-preview.png

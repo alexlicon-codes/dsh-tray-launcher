@@ -1,0 +1,11 @@
+{
+  "_note": "模板文件，不要直接改名使用：双击 setup.cmd 会生成 settings.json。repoRoot 留空表示使用全局 dsh 命令。",
+  "language": "zh",
+  "repoRoot": "",
+  "port": 3080,
+  "harnessCommand": "pnpm dsh web --no-open",
+  "readyTimeoutSec": 180,
+  "autoOpen": true,
+  "startOnLaunch": false,
+  "trayAutostart": false
+}

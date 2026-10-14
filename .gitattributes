@@ -1,0 +1,17 @@
+# 行尾策略 / Line-ending policy
+#
+# GitHub 的「Download ZIP」不走 core.autocrlf，所以必须在仓库里钉死：
+# ZIP downloads from GitHub bypass core.autocrlf, so the repo itself has to pin this.
+#
+# 顺序有意义：后面的规则覆盖前面的（* 也会匹配 *.cmd）。
+
+* text=auto
+
+# cmd.exe 解析 LF-only 批处理会在标签、括号块上出错；.vbs 同理，保持 CRLF 原样存储。
+# cmd.exe mis-parses LF-only batch files (labels, parenthesised blocks); keep CRLF, stored as-is.
+*.cmd -text
+*.bat -text
+*.vbs -text
+
+# 图标是二进制，禁止任何转换
+*.ico -text

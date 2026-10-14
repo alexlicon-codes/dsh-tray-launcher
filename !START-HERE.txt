@@ -1,0 +1,53 @@
+﻿================================================================
+  dsh-tray-launcher
+================================================================
+
+
+        👉   Double-click  setup.cmd   to set it up.
+        👉   双击 setup.cmd 即可完成设置。
+
+        That is the only step.  /  就这一步。
+
+
+What it asks / 它会问你什么
+----------------------------------------------------------------
+  1. Language  /  语言
+     简体中文 · English · 日本語 · 한국어 · Русский
+
+  2. Harness path  /  Harness 路径
+     The folder that contains pnpm-workspace.yaml and apps\cli
+     (leave it empty if you use a global `dsh` command).
+     含 pnpm-workspace.yaml 与 apps\cli 的那个文件夹
+     （如果用的是全局 `dsh`，可以留空）。
+
+  3. Three logon options + a desktop-shortcut button
+     三个开机选项 + 一个"创造桌面快捷方式"按钮
+
+It then writes settings.json. No administrator rights needed.
+然后它会写入 settings.json。不需要管理员权限。
+
+
+Requirement / 前提
+----------------------------------------------------------------
+  You need an existing DeepSeek Harness checkout, or a global
+  `dsh` command on your PATH. The launcher starts Harness for
+  you; it does not install Harness itself.
+  你需要已经有一份 DeepSeek Harness 代码，或 PATH 上有全局
+  `dsh` 命令。本工具只负责帮你启动 Harness，不负责安装它。
+
+
+Files / 文件说明
+----------------------------------------------------------------
+  setup.cmd            <-- START HERE / 从这里开始
+  start-tray.vbs           the tray icon itself / 托盘本体入口
+  README.md                full docs, English then 中文 / 完整说明
+  dsh-tray.ico             the tray icon (self-made) / 自制图标
+  settings.example.json    config template / 配置模板
+
+
+Unofficial / 非官方
+----------------------------------------------------------------
+  Not affiliated with DeepSeek. No official code or brand assets
+  are included. Official desktop app: deepseek.com/download
+  与 DeepSeek 官方无关，不含官方代码或品牌资产。
+  官方桌面端：deepseek.com/download
