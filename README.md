@@ -114,6 +114,8 @@ Stop Harness and exit
 
 Switching **Language / 语言** re-labels the menu, the tray tooltip and the balloon tips **immediately**, and writes the choice back to `settings.json` for next time.
 
+![Switching language from the tray menu](docs/screenshot-language-menu.png)
+
 ## Configuration: `settings.json`
 
 Generated on first run; just edit it if you prefer.
@@ -279,6 +281,8 @@ git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 ```
 
 「语言 / Language」切换后菜单、托盘提示、气泡通知**立即**变成对应语言，并写回 `settings.json`，下次启动沿用。
+
+![在托盘菜单里切换语言](docs/screenshot-language-menu.png)
 
 ## 配置：settings.json
 
