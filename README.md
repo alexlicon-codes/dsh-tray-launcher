@@ -13,15 +13,56 @@ The tray menu and the settings wizard are available in **5 languages: 简体中�
 > Per the DeepSeek Harness brand guidelines the project name uses the **DSH** abbreviation; the full product name appears only in descriptive text.
 > Official desktop app: [deepseek.com/download](https://www.deepseek.com/download/).
 
-## Getting the code
+## Why this little tool
+
+Starting DeepSeek Harness by hand means opening a terminal, going to the repository and typing `pnpm dsh web` — every single time. This replaces all of that with **one click**.
+
+- **🖱️ One click. No terminal, no console flash.** A tray icon that starts Harness and opens the chat in your browser. Nothing to type, no Git Bash window, no black box popping up.
+- **🧙 A setup wizard that does the thinking.** `setup.cmd` asks two things — language and Harness path — and handles the rest. It auto-detects your Harness checkout; a globally installed `dsh` works too, and then you leave the path empty.
+- **🌏 Five languages, switched live.** Simplified Chinese, English, Japanese, Korean and Russian cover the tray menu, tooltips, notifications and the settings window. Change it and everything re-labels itself immediately.
+- **⏱️ It does not slow your boot down.** At logon it only puts the tray icon up; node, tsx and the browser wait until you actually click. Prefer Harness ready and waiting? Tick "start Harness at logon".
+- **🖥️ It never starts a second Harness.** Before doing anything it probes the port and reuses a Harness that is already listening — including one you started yourself in a terminal. The tray is single-instance, and "open" requests from the desktop shortcut are handed to the running tray.
+- **📌 A desktop shortcut from one button.** The settings window creates `dsh-tray-launcher.lnk`; double-clicking it starts Harness (if needed) and pops the chat straight into your browser.
+- **🔧 Non-destructive by design.** Autostart is an ordinary `HKCU …\Run` entry, so it shows up in **Task Manager → Startup** and can be disabled like any other app. Quitting the tray never kills your session or your running jobs.
+- **🧯 No admin rights, nothing extra to install.** It runs on the Windows PowerShell 5.1 that already ships with Windows. The only prerequisite is the Harness checkout you already have.
+- **📄 Logs when something looks off.** Service output goes to `harness.log` (auto-rotated at 5 MB), tray activity to `tray.log`.
+- **🪶 Tiny and readable.** Two PowerShell scripts, one VBS launcher, one icon. No runtime to install, no dependencies, no build step.
+
+## Getting started (step by step)
+
+### Step 1 — get the files
 
 ```sh
-git clone <this-repo-url>
+git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 ```
 
-Or use **Code → Download ZIP** and extract it to any folder you like. Then double-click `setup.cmd` — no administrator rights and no extra tooling are needed on top of the Harness checkout you already have.
+**No git?** Open the repository page, click the green **Code** button → **Download ZIP**, then right-click the downloaded ZIP → **Extract All…** and choose a folder such as `D:\dsh-tray-launcher`.
 
-> Note: this launcher starts *your* DeepSeek Harness instance. You need either an existing Harness checkout (with `pnpm-workspace.yaml` and `apps\cli`) or a globally installed `dsh` command.
+> ⚠️ Extract it first — double-clicking files from inside the ZIP preview window will not work.
+> ⚠️ A simple path helps (for example `D:\dsh-tray-launcher`). Avoid running it from a temporary folder or from inside an archive.
+
+### Step 2 — double-click `setup.cmd`
+
+That is the whole setup. The wizard opens and asks three things:
+
+1. **Language** — pick yours; every label switches immediately.
+2. **Harness path** — already filled in if your Harness checkout was found. If not, click **Browse…** and select the folder containing `pnpm-workspace.yaml` and `apps\cli`. Using a global `dsh` instead? Leave it empty.
+3. **Three logon options** — the defaults are fine if you are unsure:
+   - ✅ **start the tray tool at logon** — the icon comes back after every reboot
+   - ⬜ **start Harness at logon** — tick only if you want Harness already running
+   - ✅ **start at logon and open browser** — open the chat automatically once Harness is up
+
+Click **Save** — done. (You can also click **Create desktop shortcut** right there.)
+
+> Prerequisite: this launcher starts *your* DeepSeek Harness. You need either an existing Harness checkout (with `pnpm-workspace.yaml` and `apps\cli`) or a global `dsh` command. No administrator rights are required.
+
+### Step 3 — use it
+
+- A tray icon appears near the clock. **Double-click it** to open Harness — the first start takes a few seconds while Harness boots.
+- **Right-click it** any time to restart or stop Harness, view the logs, open **Settings…**, or switch language.
+- The desktop shortcut does the same thing: start Harness, then pop the chat in your browser.
+
+From here on you never type the launch command again.
 
 ## What to double-click
 
@@ -29,7 +70,7 @@ Or use **Code → Download ZIP** and extract it to any folder you like. Then dou
 | --- | --- |
 | **Configure it for the first time** (language / Harness path / logon options) | `setup.cmd` |
 | Start the tray silently (no console window) | `start-tray.vbs` |
-| Just open Harness and pop the chat in my browser | desktop shortcut `DeepSeek Harness` |
+| Just open Harness and pop the chat in my browser | desktop shortcut `dsh-tray-launcher.lnk` |
 | Turn logon autostart off | `uninstall-autostart.cmd` |
 
 ## Settings window (`setup.cmd`, or "Settings…" in the tray menu)
@@ -115,12 +156,6 @@ Generated on first run; just edit it if you prefer.
 - **Keep every `.cmd` file pure ASCII and do not add `chcp`**: when cmd.exe switches code pages inside a batch file that also contains multi-byte characters, it mis-parses by byte offset (you see errors like `'cho' is not recognized as an internal or external command`). That is why console-facing text here is English and the Chinese details go into `autostart.log`.
 - **Batch files must keep CRLF line endings.** cmd.exe mis-parses LF-only `.cmd` files (labels and parenthesised blocks first), and GitHub's "Download ZIP" bypasses `core.autocrlf`. `.gitattributes` therefore pins `*.cmd`, `*.bat` and `*.vbs` to `-text` so they are stored exactly as they are on disk; `.ps1` files are left on `text=auto` (PowerShell accepts either ending).
 
-## Repository / publishing
-
-- Only code and documentation are tracked. `settings.json`, `run-harness.cmd`, `*.log` and `open.request` are in `.gitignore` — they are local runtime state and must not be committed.
-- A template lives in [`settings.example.json`](settings.example.json); the real file is produced by `setup.cmd`.
-- The tray icon `dsh-tray.ico` was drawn with .NET `System.Drawing` and packed into an ICO (rounded gradient tile with a white `>_` prompt). It contains **no third-party brand assets**, and it ships with the app, so no extra runtime asset is needed.
-
 ## License
 
 [MIT](LICENSE). This is a community tool and is not affiliated with DeepSeek.
@@ -142,15 +177,56 @@ Generated on first run; just edit it if you prefer.
 > 项目名按 DeepSeek Harness 品牌规范使用 **DSH** 缩写；完整产品名仅出现在描述性文字中。
 > 官方桌面端请看 [deepseek.com/download](https://www.deepseek.com/download/)。
 
-## 获取代码
+## 这个工具好在哪
+
+手动启动 DeepSeek Harness，意味着每次都要开终端、进仓库、敲 `pnpm dsh web`。这个工具把这一切变成**一次点击**。
+
+- **🖱️ 一键搞定，不用终端、不闪黑框。** 托盘图标启动 Harness 并自动打开浏览器对话；不用敲命令，没有 Git Bash 窗口，也不会有黑框一闪而过。
+- **🧙 向导替你想好了。** `setup.cmd` 只问两件事 —— 语言和 Harness 路径，其余全自动。它会自动找到你的 Harness 代码；用全局 `dsh` 的话路径留空即可。
+- **🌏 五种语言，随切随变。** 简体中文 / English / 日本語 / 한국어 / Русский 覆盖托盘菜单、悬停提示、气泡通知和设置窗口，切换后界面立刻跟着变。
+- **⏱️ 不拖慢开机。** 登录时只把托盘图标放上去，node、tsx 和浏览器都等你真正点开才启动。想一登录就绪，勾上「开机自动启动 DeepSeek Harness」即可。
+- **🖥️ 绝不会启动第二份 Harness。** 动手前先探测端口，已经有人在监听就直接复用（包括你自己在终端里起的那份）。托盘是单实例的，桌面快捷方式的「打开」请求也会交给已在运行的托盘执行。
+- **📌 一个按钮就有桌面快捷方式。** 设置窗口会生成 `dsh-tray-launcher.lnk`，以后双击它 = 启动 Harness（没在跑就启动）+ 直接弹出浏览器对话。
+- **🔧 不侵入系统。** 开机自启就是一条普通的 `HKCU …\Run` 注册表项，会出现在**任务管理器 → 启动**里，可以像别的应用一样禁用。退出托盘不会杀掉你的会话或正在跑的任务。
+- **🧯 不需要管理员权限，也不用额外装东西。** 跑在 Windows 自带的 PowerShell 5.1 上；唯一的前提就是你本来就有的那份 Harness 代码。
+- **📄 出问题时有日志。** 服务输出进 `harness.log`（超过 5 MB 自动轮转），托盘自身记录在 `tray.log`。
+- **🪶 体量小、代码短。** 两个 PowerShell 脚本 + 一个 VBS 启动器 + 一个图标，没有运行时依赖，也不需要构建。
+
+## 傻瓜式安装（三步）
+
+### 第一步 —— 把文件拿到本地
 
 ```sh
-git clone <本仓库地址>
+git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 ```
 
-或者用 **Code → Download ZIP** 下载后解压到任意文件夹，然后双击 `setup.cmd`。不需要管理员权限，也不需要在你已有的 Harness 环境之外再装什么。
+**没装 git？** 打开仓库页面 → 点绿色的 **Code** 按钮 → **Download ZIP**，然后右键下载到的压缩包 → **全部解压缩…**，选一个像 `D:\dsh-tray-launcher` 这样的目录。
 
-> 注意：这个启动器启动的是**你自己的** DeepSeek Harness。前提是你已经有 Harness 的代码（含 `pnpm-workspace.yaml` 与 `apps\cli`），或者装了全局 `dsh` 命令。
+> ⚠️ 一定要先解压。直接在压缩包的预览窗口里双击文件是不行的。
+> ⚠️ 路径越简单越好（比如 `D:\dsh-tray-launcher`）；不要放在临时目录里，也不要直接从压缩包里运行。
+
+### 第二步 —— 双击 `setup.cmd`
+
+这就是全部安装过程。向导会问你三件事：
+
+1. **语言** —— 选你的语言，窗口上的文字立刻切换。
+2. **Harness 路径** —— 如果程序探测到了你的 Harness 代码，这里已经填好了；没探测到就点「浏览…」，选择含 `pnpm-workspace.yaml` 与 `apps\cli` 的那个文件夹。用全局 `dsh` 的话留空。
+3. **三个开机选项** —— 拿不准就保持默认：
+   - ✅ **开机自动启动托盘工具** —— 每次开机图标都会回来
+   - ⬜ **开机自动启动 DeepSeek Harness** —— 想让它开机就绪才勾
+   - ✅ **开机启动 + 弹出浏览器** —— Harness 起来后自动打开对话
+
+点**保存**即可。（也可以顺手点一下「创造桌面快捷方式」。）
+
+> 前提：这个启动器启动的是**你自己的** DeepSeek Harness。你需要已经有一份 Harness 代码（含 `pnpm-workspace.yaml` 与 `apps\cli`），或者 PATH 上有全局 `dsh`。不需要管理员权限。
+
+### 第三步 —— 开始用
+
+- 时钟旁边会出现托盘图标，**双击它**就能打开 Harness；第一次启动要等几秒让 Harness 跑起来。
+- **右键它**随时可以：重新启动 / 停止 Harness、查看日志、打开**设置…**、切换语言。
+- 桌面快捷方式效果一样：启动 Harness，然后把对话弹到浏览器里。
+
+从现在起，你再也不用敲那条启动命令了。
 
 ## 双击哪个文件
 
@@ -158,7 +234,7 @@ git clone <本仓库地址>
 | --- | --- |
 | **第一次配置**（语言 / Harness 路径 / 开机选项） | `setup.cmd` |
 | 启动托盘（无控制台窗口，不会闪黑框） | `start-tray.vbs` |
-| 只想开 Harness 并弹出浏览器对话 | 桌面「DeepSeek Harness」快捷方式 |
+| 只想开 Harness 并弹出浏览器对话 | 桌面「dsh-tray-launcher」快捷方式 |
 | 关掉开机自启 | `uninstall-autostart.cmd` |
 
 ## 设置窗口（`setup.cmd`，或托盘菜单「设置…」）
@@ -243,12 +319,6 @@ git clone <本仓库地址>
 - **桌面快捷方式**是 `.lnk`（`dsh-tray-launcher.lnk`，纯 ASCII 名），目标为 `wscript.exe "…\start-tray.vbs" --open`；随时可以在设置窗口点「创造桌面快捷方式」重新生成。它创建失败只影响桌面图标，不影响开机自启。
 - **`.cmd` 一律保持纯 ASCII，且不要写 `chcp`**：cmd.exe 在批处理里切换代码页、同时文件含多字节字符时，会按字节偏移错位解析（表现为 `'cho' is not recognized as an internal or external command`）。所以面向控制台的提示统一用英文，中文详情写进 `autostart.log`。
 - **`.cmd` / `.vbs` 必须保持 CRLF 行尾**：cmd.exe 解析 LF-only 的批处理会出错（标签和括号块最先中招），而 GitHub 的「Download ZIP」不经过 `core.autocrlf` 转换。所以 `.gitattributes` 把 `*.cmd`、`*.bat`、`*.vbs` 钉为 `-text`（按磁盘上的原样存储）；`.ps1` 保持在 `text=auto`（PowerShell 两种行尾都能跑）。
-
-## 发布 / 仓库
-
-- 本仓库只跟踪代码与文档；`settings.json`、`run-harness.cmd`、`*.log`、`open.request` 已在 `.gitignore` 里，属于本机运行状态，不要提交。
-- 模板见 [`settings.example.json`](settings.example.json)；实际配置由 `setup.cmd` 生成。
-- 托盘图标 `dsh-tray.ico` 是用 .NET `System.Drawing` 画出来再打包成 ICO 的（圆角渐变底 + 白色 `>_` 提示符），**不包含任何第三方品牌资产**。图标已随包提供，运行时不需要额外资源。
 
 ## 许可
 
