@@ -64,7 +64,7 @@ $script:Strings = @{
   chkTrayAutostart   = @{ zh='开机自动启动托盘工具'; en='Start the tray tool at logon'; ja='ログオン時にトレイツールを起動'; ko='로그온 시 트레이 도구 시작'; ru='Запускать трей-инструмент при входе' }
   chkStartHarness    = @{ zh='开机自动启动 DeepSeek Harness'; en='Start DeepSeek Harness at logon'; ja='ログオン時に DeepSeek Harness を起動'; ko='로그온 시 DeepSeek Harness 시작'; ru='Запускать DeepSeek Harness при входе' }
   chkOpenBrowser     = @{ zh='开机启动 + 弹出浏览器'; en='Start at logon and open browser'; ja='ログオン時に起動してブラウザを開く'; ko='로그온 시 시작 후 브라우저 열기'; ru='Запуск при входе и открытие браузера' }
-  btnDesktopShortcut = @{ zh='创造桌面快捷方式（启动 Harness 并弹出浏览器对话）'; en='Create desktop shortcut (launch Harness & open chat)'; ja='デスクトップショートカットを作成（Harness を起動してチャットを開く）'; ko='바탕화면 바로가기 만들기 (Harness 시작 및 채팅 열기)'; ru='Создать ярлык на рабочем столе (запуск Harness и открытие чата)' }
+  btnDesktopShortcut = @{ zh='创造桌面快捷方式（启动 Harness 并弹出浏览器对话）'; en='Create desktop shortcut (start Harness and open the chat)'; ja='デスクトップショートカットを作成（Harness を起動してチャットを開く）'; ko='바탕화면 바로가기 만들기 (Harness 시작 및 채팅 열기)'; ru='Создать ярлык на рабочем столе (запуск Harness и открытие чата)' }
   btnSave            = @{ zh='保存'; en='Save'; ja='保存'; ko='저장'; ru='Сохранить' }
   btnCancel          = @{ zh='取消'; en='Cancel'; ja='キャンセル'; ko='취소'; ru='Отмена' }
   hintDetected       = @{ zh='已自动检测到 Harness 仓库：{0}'; en='Detected Harness repo: {0}'; ja='Harness リポジトリを検出：{0}'; ko='Harness 저장소 감지됨: {0}'; ru='Обнаружен репозиторий Harness: {0}' }
@@ -191,11 +191,16 @@ $form.MaximizeBox     = $false
 $form.MinimizeBox     = $false
 $form.Font            = $font
 
+# 高 DPI（125% / 150%）下整体等比缩放：固定像素坐标不缩放的话，长文案会被窗口裁掉
+$form.AutoScaleMode       = [System.Windows.Forms.AutoScaleMode]::Dpi
+$form.AutoScaleDimensions = New-Object System.Drawing.SizeF(96.0, 96.0)
+
 function New-Label([string]$Text, [int]$X, [int]$Y, [int]$W, [int]$H) {
   $l = New-Object System.Windows.Forms.Label
   $l.Text = $Text
   $l.Location = New-Object System.Drawing.Point($X, $Y)
   $l.Size = New-Object System.Drawing.Size($W, $H)
+  $l.AutoSize = $true          # 按文案自适应，别让长句被裁掉
   $form.Controls.Add($l)
   return $l
 }

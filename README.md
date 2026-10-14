@@ -116,9 +116,30 @@ Switching **Language / 语言** re-labels the menu, the tray tooltip and the bal
 
 ![Switching language from the tray menu](docs/screenshot-language-menu.png)
 
-## Configuration: `settings.json`
+## Configuration
 
-Generated on first run; just edit it if you prefer.
+### The easy way — the settings window
+
+Double-click `setup.cmd`, or right-click the tray icon → **Settings…**. Both open the same window, so you never have to touch a text file:
+
+- **Language** — switch it and every label in the window re-labels itself.
+- **Harness path** — pre-filled when your checkout was detected; the green line at the top tells you what was found. Leave it empty to use a global `dsh`.
+- **Launch command** — defaults to `pnpm dsh web --no-open`. The `--no-open` matters: it stops `dsh web` from opening the browser itself, because that decision belongs to the tray.
+- **Port** — defaults to `3080`; it is only used to tell whether Harness is already running.
+- **Start the tray tool at logon** — puts the tray icon back after every reboot.
+- **Start Harness at logon** — also boots Harness as soon as the tray appears (slightly slower sign-in).
+- **Start at logon and open browser** — after the option above starts Harness, open the chat too.
+- **Create desktop shortcut** — drops `dsh-tray-launcher.lnk` on your desktop.
+
+Click **Save** and you are done. Nothing else needs configuring.
+
+### Where the settings live
+
+`settings.json` sits **in the folder you cloned or extracted into — right next to `setup.cmd`, `start-tray.vbs` and `dsh-tray.ico`**. The settings window creates it the first time you save, and the tray re-reads it on every start. Delete the file and the defaults come back; move the folder and the file moves with it.
+
+### The manual way — editing `settings.json`
+
+Prefer a text editor, or want to script it? The file is small and every key is explained below.
 
 | Key | Default | Meaning |
 | --- | --- | --- |
@@ -284,9 +305,30 @@ git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 
 ![在托盘菜单里切换语言](docs/screenshot-language-menu.png)
 
-## 配置：settings.json
+## 配置
 
-首次运行自动生成，直接改就行：
+### 最省事的方式 —— 设置窗口
+
+双击 `setup.cmd`，或者右键托盘图标 →「设置…」。两个入口打开的是同一个窗口，全程不用碰文本文件：
+
+- **语言** —— 切换后窗口里所有文字立刻跟着变。
+- **Harness 路径** —— 探测到你的代码时会自动填好；顶部那行绿字会告诉你探测到了什么。留空表示用全局 `dsh`。
+- **启动命令** —— 默认 `pnpm dsh web --no-open`。`--no-open` 很关键：它让 `dsh web` 不要自己开浏览器，开不开由托盘统一决定。
+- **端口** —— 默认 `3080`，只用来判断 Harness 是否已经在运行。
+- **开机自动启动托盘工具** —— 每次开机都把托盘图标放回来。
+- **开机自动启动 DeepSeek Harness** —— 托盘出现的顺带把 Harness 跑起来（会略微拖慢开机）。
+- **开机启动 + 弹出浏览器** —— 上面那项启动 Harness 后，再自动打开对话。
+- **创造桌面快捷方式** —— 在桌面生成 `dsh-tray-launcher.lnk`。
+
+点**保存**即可，其他都不用配。
+
+### 配置文件在哪
+
+`settings.json` 就在**你 clone 或解压出来的那个文件夹里 —— 和 `setup.cmd`、`start-tray.vbs`、`dsh-tray.ico` 并排**。第一次点保存时由设置窗口生成，之后托盘每次启动都会重新读它。删掉它就回到默认值；整个文件夹搬走，它也跟着走。
+
+### 手动方式 —— 直接改 `settings.json`
+
+如果你更习惯用文本编辑器，或者想用脚本批量改：文件很小，每个键的含义都在下面。
 
 | 键 | 默认 | 说明 |
 | --- | --- | --- |
