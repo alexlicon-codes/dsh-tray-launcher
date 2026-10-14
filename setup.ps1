@@ -57,14 +57,14 @@ $script:LangCodes = @($script:Languages.Keys)
 $script:Strings = @{
   title              = @{ zh='dsh-tray-launcher · 设置'; en='dsh-tray-launcher · Settings'; ja='dsh-tray-launcher · 設定'; ko='dsh-tray-launcher · 설정'; ru='dsh-tray-launcher · Настройки' }
   lblLang            = @{ zh='语言 / Language：'; en='Language:'; ja='言語 / Language：'; ko='언어 / Language:'; ru='Язык / Language:' }
-  lblPath            = @{ zh='Harness 路径（仓库根目录；留空表示用全局 dsh 命令）：'; en='Harness path (repo root; leave empty to use a global dsh):'; ja='Harness パス（リポジトリルート；空欄ならグローバル dsh）:'; ko='Harness 경로 (저장소 루트; 전역 dsh를 쓰려면 비워 둠):'; ru='Путь к Harness (корень репозитория; оставьте пустым для глобального dsh):' }
+  lblPath            = @{ zh='Harness 路径（留空 = 全局 dsh）：'; en='Harness path (empty = global dsh):'; ja='Harness パス（空欄 = グローバル dsh）:'; ko='Harness 경로 (비우면 전역 dsh):'; ru='Путь к Harness (пусто = глобальный dsh):' }
   btnBrowse          = @{ zh='浏览…'; en='Browse…'; ja='参照…'; ko='찾아보기…'; ru='Обзор…' }
   lblCmd             = @{ zh='启动命令：'; en='Launch command:'; ja='起動コマンド：'; ko='시작 명령:'; ru='Команда запуска:' }
   lblPort            = @{ zh='端口：'; en='Port:'; ja='ポート：'; ko='포트:'; ru='Порт:' }
   chkTrayAutostart   = @{ zh='开机自动启动托盘工具'; en='Start the tray tool at logon'; ja='ログオン時にトレイツールを起動'; ko='로그온 시 트레이 도구 시작'; ru='Запускать трей-инструмент при входе' }
   chkStartHarness    = @{ zh='开机自动启动 DeepSeek Harness'; en='Start DeepSeek Harness at logon'; ja='ログオン時に DeepSeek Harness を起動'; ko='로그온 시 DeepSeek Harness 시작'; ru='Запускать DeepSeek Harness при входе' }
   chkOpenBrowser     = @{ zh='开机启动 + 弹出浏览器'; en='Start at logon and open browser'; ja='ログオン時に起動してブラウザを開く'; ko='로그온 시 시작 후 브라우저 열기'; ru='Запуск при входе и открытие браузера' }
-  btnDesktopShortcut = @{ zh='创造桌面快捷方式（启动 Harness 并弹出浏览器对话）'; en='Create desktop shortcut (start Harness and open the chat)'; ja='デスクトップショートカットを作成（Harness を起動してチャットを開く）'; ko='바탕화면 바로가기 만들기 (Harness 시작 및 채팅 열기)'; ru='Создать ярлык на рабочем столе (запуск Harness и открытие чата)' }
+  btnDesktopShortcut = @{ zh='创造桌面快捷方式'; en='Create desktop shortcut'; ja='デスクトップショートカットを作成'; ko='바탕화면 바로가기 만들기'; ru='Создать ярлык на рабочем столе' }
   btnSave            = @{ zh='保存'; en='Save'; ja='保存'; ko='저장'; ru='Сохранить' }
   btnCancel          = @{ zh='取消'; en='Cancel'; ja='キャンセル'; ko='취소'; ru='Отмена' }
   hintDetected       = @{ zh='已自动检测到 Harness 仓库：{0}'; en='Detected Harness repo: {0}'; ja='Harness リポジトリを検出：{0}'; ko='Harness 저장소 감지됨: {0}'; ru='Обнаружен репозиторий Harness: {0}' }
@@ -184,7 +184,7 @@ function Launch-Tray {
 # ------------------------------ 界面 ------------------------------
 $font = New-UiFont
 $form = New-Object System.Windows.Forms.Form
-$form.Size            = New-Object System.Drawing.Size(500, 510)
+$form.Size            = New-Object System.Drawing.Size(580, 510)
 $form.StartPosition   = 'CenterScreen'
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox     = $false
@@ -205,7 +205,7 @@ function New-Label([string]$Text, [int]$X, [int]$Y, [int]$W, [int]$H) {
   return $l
 }
 
-$hint = New-Label '' 20 14 452 42
+$hint = New-Label '' 20 14 524 42
 $hint.AutoSize = $false
 
 # 第一步：语言
@@ -222,11 +222,11 @@ $form.Controls.Add($cmbLang)
 $lblPath = New-Label '' 20 124 452 20
 $txtRoot = New-Object System.Windows.Forms.TextBox
 $txtRoot.Location = New-Object System.Drawing.Point(20, 146)
-$txtRoot.Size = New-Object System.Drawing.Size(356, 24)
+$txtRoot.Size = New-Object System.Drawing.Size(404, 24)
 $form.Controls.Add($txtRoot)
 
 $btnBrowse = New-Object System.Windows.Forms.Button
-$btnBrowse.Location = New-Object System.Drawing.Point(386, 145)
+$btnBrowse.Location = New-Object System.Drawing.Point(432, 145)
 $btnBrowse.Size = New-Object System.Drawing.Size(86, 26)
 $form.Controls.Add($btnBrowse)
 
@@ -234,7 +234,7 @@ $form.Controls.Add($btnBrowse)
 $lblCmd = New-Label '' 20 180 452 20
 $txtCmd = New-Object System.Windows.Forms.TextBox
 $txtCmd.Location = New-Object System.Drawing.Point(20, 202)
-$txtCmd.Size = New-Object System.Drawing.Size(452, 24)
+$txtCmd.Size = New-Object System.Drawing.Size(524, 24)
 $form.Controls.Add($txtCmd)
 
 # 端口
@@ -269,12 +269,12 @@ $form.Controls.Add($btnDesktopShortcut)
 
 # 保存 / 取消
 $btnSave = New-Object System.Windows.Forms.Button
-$btnSave.Location = New-Object System.Drawing.Point(300, 424)
+$btnSave.Location = New-Object System.Drawing.Point(380, 424)
 $btnSave.Size = New-Object System.Drawing.Size(90, 30)
 $form.Controls.Add($btnSave)
 
 $btnCancel = New-Object System.Windows.Forms.Button
-$btnCancel.Location = New-Object System.Drawing.Point(398, 424)
+$btnCancel.Location = New-Object System.Drawing.Point(478, 424)
 $btnCancel.Size = New-Object System.Drawing.Size(74, 30)
 $form.Controls.Add($btnCancel)
 

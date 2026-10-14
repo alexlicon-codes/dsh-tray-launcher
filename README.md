@@ -1,5 +1,7 @@
 # dsh-tray-launcher
 
+<img src="docs/icon.png" width="64" alt="dsh-tray-launcher tray icon">
+
 > ## 👉 Double-click **`setup.cmd`** to set it up. That's the only step.
 > ## 👉 双击 **`setup.cmd`** 即可完成设置，就这一步。
 
@@ -66,6 +68,17 @@ Click **Save** — done. (You can also click **Create desktop shortcut** right t
 
 From here on you never type the launch command again.
 
+## The desktop shortcut
+
+One button in the settings window — **Create desktop shortcut** — puts a shortcut called `dsh-tray-launcher` on your desktop. It is the fastest way to get to work:
+
+<img src="docs/screenshot-desktop-shortcut.png" width="126" alt="The dsh-tray-launcher desktop shortcut">
+
+- **Double-click it** and the tray starts Harness if it is not running yet, waits for it to come up, then opens the chat in your browser.
+- **If Harness is already running** it just opens the browser — it never starts a second instance; the "open" request is handed to the tray that is already there.
+- It is an ordinary `.lnk` pointing at `wscript.exe "…\start-tray.vbs" --open`, so it works whether or not the tray icon happens to be on screen.
+- **Deleting it is harmless** — the shortcut has nothing to do with logon autostart. Remove it any time, and re-create it from the settings window whenever you want it back.
+
 ## What to double-click
 
 | I want to… | Double-click |
@@ -131,6 +144,8 @@ Double-click `setup.cmd`, or right-click the tray icon → **Settings…**. Both
 - **Start at logon and open browser** — after the option above starts Harness, open the chat too.
 - **Create desktop shortcut** — drops `dsh-tray-launcher.lnk` on your desktop.
 
+![The settings window](docs/screenshot-settings.png)
+
 Click **Save** and you are done. Nothing else needs configuring.
 
 ### Where the settings live
@@ -188,6 +203,8 @@ Prefer a text editor, or want to script it? The file is small and every key is e
 ---
 
 # dsh-tray-launcher（中文）
+
+<img src="docs/icon.png" width="64" alt="dsh-tray-launcher 托盘图标">
 
 > ## 👉 双击 **`setup.cmd`** 即可完成设置，就这一步。
 > ## 👉 Double-click **`setup.cmd`** to set it up. That's the only step.
@@ -255,6 +272,17 @@ git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 
 从现在起，你再也不用敲那条启动命令了。
 
+## 桌面快捷方式
+
+设置窗口里的一个按钮 —— **创造桌面快捷方式** —— 会在桌面放一个叫 `dsh-tray-launcher` 的快捷方式。这是最快开工的方式：
+
+<img src="docs/screenshot-desktop-shortcut.png" width="126" alt="dsh-tray-launcher 桌面快捷方式">
+
+- **双击它**：Harness 没在跑就先启动，等它起来后自动把对话弹到浏览器里。
+- **Harness 已经在跑**：直接打开浏览器，绝不会启动第二份 —— 这个「打开」请求会交给已经在运行的那个托盘执行。
+- 它就是一个普通的 `.lnk`，目标为 `wscript.exe "…\start-tray.vbs" --open`，所以托盘图标这会儿在不在都不影响它。
+- **删掉它没有任何副作用**：快捷方式跟开机自启无关，随时可以删；想找回来就在设置窗口再点一次。
+
 ## 双击哪个文件
 
 | 想做什么 | 双击这个 |
@@ -319,6 +347,8 @@ git clone https://github.com/alexlicon-codes/dsh-tray-launcher.git
 - **开机自动启动 DeepSeek Harness** —— 托盘出现的顺带把 Harness 跑起来（会略微拖慢开机）。
 - **开机启动 + 弹出浏览器** —— 上面那项启动 Harness 后，再自动打开对话。
 - **创造桌面快捷方式** —— 在桌面生成 `dsh-tray-launcher.lnk`。
+
+![设置窗口](docs/screenshot-settings.png)
 
 点**保存**即可，其他都不用配。
 
