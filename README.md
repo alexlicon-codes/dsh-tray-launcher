@@ -17,6 +17,8 @@ The tray menu and the settings wizard are available in **5 languages: 简体中�
 
 Starting DeepSeek Harness by hand means opening a terminal, going to the repository and typing `pnpm dsh web` — every single time. This replaces all of that with **one click**.
 
+![The tray menu](docs/screenshot-tray-menu.png)
+
 - **🖱️ One click. No terminal, no console flash.** A tray icon that starts Harness and opens the chat in your browser. Nothing to type, no Git Bash window, no black box popping up.
 - **🧙 A setup wizard that does the thinking.** `setup.cmd` asks two things — language and Harness path — and handles the rest. It auto-detects your Harness checkout; a globally installed `dsh` works too, and then you leave the path empty.
 - **🌏 Five languages, switched live.** Simplified Chinese, English, Japanese, Korean and Russian cover the tray menu, tooltips, notifications and the settings window. Change it and everything re-labels itself immediately.
@@ -180,6 +182,8 @@ Generated on first run; just edit it if you prefer.
 ## 这个工具好在哪
 
 手动启动 DeepSeek Harness，意味着每次都要开终端、进仓库、敲 `pnpm dsh web`。这个工具把这一切变成**一次点击**。
+
+![托盘菜单](docs/screenshot-tray-menu.png)
 
 - **🖱️ 一键搞定，不用终端、不闪黑框。** 托盘图标启动 Harness 并自动打开浏览器对话；不用敲命令，没有 Git Bash 窗口，也不会有黑框一闪而过。
 - **🧙 向导替你想好了。** `setup.cmd` 只问两件事 —— 语言和 Harness 路径，其余全自动。它会自动找到你的 Harness 代码；用全局 `dsh` 的话路径留空即可。
